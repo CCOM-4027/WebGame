@@ -9,18 +9,12 @@
       </section>
       <section>
         <%= render 'shared/micropost_form' %>
+	<%= render 'shared/feed' %>
       </section>
     </aside>
     <div class="span8">
-      <h3>Bricks</h3>
-      <body onload="init();">
-	<canvas id="canvas" width="600" height="600" style="border:1px solid;"></canvas>
-	<br>
-	<form>
-	  <input type="submit" onclick="startdraw(); return false;" value="start">
-	  <input type="submit" onclick="alert(document.getElementByID('canvas').width);abort() ; " value="clear">
-      </body>
-      <%= render 'shared/feed' %>
+      <h1>Games</h1>
+      <h3><%= link_to "Bricks", bricks_path %></h3>
     </div>
   </div>  
 <% else %>
