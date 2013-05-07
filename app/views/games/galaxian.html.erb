@@ -1,19 +1,35 @@
 <head>
   <title>Galaxian</title>
-<!---  <style>
-    canvas {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background: transparent;
-    }
-  </style> --->
+  <style>
+      canvas {
+        position: absolute;
+        top: 350px;
+        left: 400px;
+        background: transparent;
+      }
+      #background {
+        z-index: -2;
+      }
+      #main {
+        z-index: -1;
+      }
+      #ship {
+        z-index: 0;
+      }
+    </style>
   <h1>Galaxian</h1>
 </head>
-<body onload="init_galaxian();">
+<body>
   <!-- The canvas for the panning background -->
   <canvas id="background" width="600" height="360" style="border:1px solid;">
     Your browser does not support canvas. Please try again with a different browser.
+  </canvas>
+  <!-- The canvas for all enemy ships and bullets -->
+  <canvas id="main" width="600" height="360" style="border:1px solid">
+  </canvas>
+  <!-- The canvas the ship uses (can only move up
+         one forth the screen.) -->
+  <canvas id="ship" width="600" height="360" style="border:1px solid">
   </canvas>
 </body>
 
