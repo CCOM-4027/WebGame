@@ -37,7 +37,7 @@ function initSizeProperties(){
 	paddlewidth = WIDTH/4;
 	paddlew = WIDTH/4;// paddle size 
 }	
-function init() {
+function init_game() {
     start = false ;
     pause = false;
     canvas = document.getElementById("canvas");
