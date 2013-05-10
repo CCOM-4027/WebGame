@@ -1,23 +1,33 @@
 
 <html>
-	<head>
-		<title>Galaxian</title>
-		<h1>Galaxian</h1>
-	</head>
-	<body>
-		<!-- The canvas for the panning background -->
-		<canvas id="background" width="600" height="360">
-			Your browser does not support canvas. Please try again with a different browser.
-		</canvas>
-		<!-- The canvas for all enemy ships and bullets -->
-		<canvas id="main" width="600" height="360">
-		</canvas>
-		<!-- The canvas the ship uses (can only move up
-         one forth the screen. -->
-		<canvas id="ship" width="600" height="360">
-		</canvas>
-		<div class="score">SCORE: <span id="score"></span></div>
-		<div class="game-over" id="game-over">GAME OVER<p><span onclick="game.restart()">Restart</span></p></div>
-		<div class="loading" id="loading">LOADING...<p>Please wait</p></div>
-	</body>
+  <head>
+    <title>Galaxian</title>
+    <h1>Galaxian</h1>
+    <style>
+      canvas {
+      position: absolute;
+      background: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pad">
+      <!-- The canvas for the panning background -->
+      <canvas id="background" width="600" height="360">
+	Your browser does not support canvas. Please try again with a different browser.
+      </canvas>
+      <!-- The canvas for all enemy ships and bullets -->
+      <canvas id="main" width="600" height="360">
+      </canvas>
+      <!-- The canvas the ship uses (can only move up one forth the screen. -->
+      <canvas id="ship" width="600" height="360">
+      </canvas>
+
+
+      <div class="score">SCORE: <span id="score"></span></div>
+      <div class="game-over" id="game-over">GAME OVER<p><span onclick="game.restart()">Restart</span></p></div>
+      <div class="loading" id="loading">LOADING...<p>Please wait</p></div>
+
+    </div>
+  </body>
 </html>

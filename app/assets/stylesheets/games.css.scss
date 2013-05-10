@@ -1,12 +1,7 @@
 // Place all the styles related to the Games controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-canvas {
-    position: absolute;
-    top: 400px;
-    left: 350px;
-    background: transparent;
-}
+
 #background {
     z-index: -2;
 }
@@ -18,16 +13,15 @@ canvas {
 }
 .score {
     position: absolute;
-    top: 400px;
-    left: 870px;
+    left: 84%;
     color: #FF7F00;
     font-family: Helvetica, sans-serif;
     cursor: default;
 }
 .game-over {
     position: absolute;
-    top: 550px;
-    left: 550px;
+    top:40%;
+    left:35%;
     color: #FF7F00;
     font-family: Helvetica, sans-serif;
     font-size: 30px;
@@ -45,10 +39,18 @@ canvas {
 }
 .loading {
     position: absolute;
-    top: 550px;
-    left: 550px;
+    top:40%;
+    left:35%;
     color: #FF7F00;
     font-family: Helvetica, sans-serif;
     font-size: 30px;
     cursor: default;
 }
+
+.pad{
+    position: relative;
+    width: 600px;
+    height:360px;
+    margin: 0px auto;
+    border: 1px solid black;
+ }
