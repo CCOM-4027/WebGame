@@ -1,0 +1,2 @@
+class GalaxianController < ApplicationController
+end

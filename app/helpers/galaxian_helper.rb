@@ -1,0 +1,2 @@
+module GalaxianHelper
+end
