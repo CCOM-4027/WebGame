@@ -84,4 +84,8 @@ SampleApp::Application.configure do
   :authentication => :plain,
   :enable_starttls_auto => true
                                        }
+
+  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+  config.assets.precompile += %w( bricks.js )
+  config.assets.precompile += %w( galaxian.js )
 end
