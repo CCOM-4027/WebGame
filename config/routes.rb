@@ -9,6 +9,7 @@ SampleApp::Application.routes.draw do
   resources :sessions,   only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
+  resources :galaxians, only: [:new, :create]
 
   root to: 'static_pages#home'
 
@@ -20,7 +21,9 @@ SampleApp::Application.routes.draw do
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
   match '/bricks', to: 'games#bricks'
-  match '/galaxian', to: 'galaxian#galaxian'
+  match '/galaxian', to: 'galaxians#galaxian'
+  match '/galaxian_new', to: 'galaxians#new'
+  match 'galaxians', to: 'galaxians#list'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

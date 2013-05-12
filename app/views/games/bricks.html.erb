@@ -1,9 +1,14 @@
 <%= javascript_include_tag "bricks" %>
 <h3>Bricks</h3>
-<body onload="init_game();">
-  <canvas id="canvas" width="600" height="600" style="border:1px solid;"></canvas>
+<body onload="init();">
+  <canvas id="canvas" width="600" height="600" style="border:3px solid;"></canvas>
   <br>
+  <div id = "br-score">Score:</div>
+  <div id = "br-lives">Lives:</div>
+  <input type ="text" readonly id = "br-box">
+  <input type ="text" readonly id = "br-box2"> 
   <form>
-    <input type="submit" onclick="startdraw(); return false;" value="start">
-    <input type="submit" onclick="alert(document.getElementByID('canvas').width);abort() ; " value="clear">
+    <input type="submit" id = "br-start_button" onclick="startdraw();this.disabled = 'disabled';return false;" value="start">
+    <input type="submit" onclick="abort() ; " value="clear">
+  </form>
 </body>

@@ -1,4 +1,4 @@
-//var WIDTH = document.getElementById("canvas").width, HEIGHT = document.getElementById("canvas").height;// block size
+
 var WIDTH,HEIGHT;
 var x ;
 var y ;
@@ -9,7 +9,7 @@ var paddleh = 9;
 var paddlew ;// paddle size 
 var dx = 1;
 var dy = -6;
-var intervalID = 0,tmpID=0;
+var intervalID = 0 ;
 var canvas, ctx;
 var rightDown = false;
 var leftDown = false;
@@ -19,25 +19,37 @@ var NROWS = 5;
 var NCOLS = 5;
 var BRICKWIDTH;
 var BRICKHEIGHT = 15;
-var PADDING = 2;
+var PADDING = 4;
 var ballcolor = "#FFFFFF";
 var backcolor = "#000000";
 var paddlecolor = "#FFFF00";
 var rowcolors = ["#FF1C0A", "#FFFD0A", "#00A308", "#0008DB", "#EB0093"];
 var ballr = 10;
+var score = 0 ;
 var bricks;
-var start = false,pause=false ;
+var start = false,pause=false;
+var lives = 3;
+var paddle_touched = true ;
+var hit_count = 1;
+var block_colors= [] ;
+var COLOR_INDEX = 0 ;
+var block_numbers= 0;
 
 function initSizeProperties(){
-	WIDTH = $("#canvas").width();
+    document.getElementById("br-box").value = score ;
+    document.getElementById("br-box2").value = lives ;
+    WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
     x = WIDTH/2;
-	y = HEIGHT-10;
-	BRICKWIDTH = (WIDTH/NCOLS) - 1;
-	paddlewidth = WIDTH/4;
-	paddlew = WIDTH/4;// paddle size 
-}	
-function init_game() {
+    y = HEIGHT-10;
+    BRICKWIDTH = (WIDTH/NCOLS) - 1;
+    paddlewidth = WIDTH/4;
+    paddlew = WIDTH/4;// paddle size 
+    block_numbers= NROWS*NCOLS ;
+    
+}
+
+function init() {
     start = false ;
     pause = false;
     canvas = document.getElementById("canvas");
@@ -45,10 +57,10 @@ function init_game() {
     windowMinX = $("#canvas").offset().left;
     windowMaxX = windowMinX + $("#canvas").width();
     initSizeProperties();
-	paddlex = WIDTH/2;
+    paddlex = WIDTH/2;
     x = paddlex+(paddlewidth/2);
     y = HEIGHT-20;	
-	initbricks();
+    initbricks();
     draw();
 }
 
@@ -57,17 +69,28 @@ function initbricks() {
     for (i=0; i < NROWS; i++) {
 	bricks[i] = new Array(NCOLS);
 	for (j=0; j < NCOLS; j++) {
+	    block_colors.push(rowcolors[Math.floor(Math.random() * 4)]);
 	    bricks[i][j] = 1;
 	}
     }
 }
 
 function startdraw() {
-   // x = WIDTH/2;
-    //y = HEIGHT-10;
-    clearInterval(intervalID);
-    intervalID = setInterval(draw, 10);
-    initbricks();
+    
+    if(start){
+	paddlex = WIDTH/2;
+	x = paddlex+(paddlewidth/2);
+        y = HEIGHT-20;
+	clearInterval(intervalID);
+	intervalID = setInterval(draw, 10);
+    }
+    
+    else{
+	start = true;
+    	clearInterval(intervalID);
+    	intervalID = setInterval(draw, 10);
+    	initbricks();
+    }	
 }
 
 function abort() {
@@ -75,116 +98,175 @@ function abort() {
     init();
 }
 
-function draw() {
-  ctx.fillStyle = backcolor;
-  clear();
-  ctx.fillStyle = ballcolor;
-  //for (var x = 25,y=25 ; x < 75 ; x+=25) circle(x,y,ballr);
-  circle(x, y, ballr);
+function  save () {	
+    
+    var xmlhttp ;
+    
+    // Nota: El signo de pregunta es para anadir las variables que se le van a enviar al plit(" ",5)jax.
+    
+    alert("fname = " + file_name) ;
+    var url = "save.rb?score="+score+"&lives="+lives;	
+    if (window.XMLHttpRequest) xmlhttp=new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
+    else xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5	
+    xmlhttp.open("POST",url,false); // We define the kind of request.
+    xmlhttp.send(); // The request is sent to the server side.
+    //var response = xmlhttp.responseText ; // We get the server response. 
 
-  if (rightDown) paddlex += 5;
-  else if (leftDown) paddlex -= 5;
-  if(paddlex+paddlew>WIDTH) paddlex-=5;
-  else if(paddlex+paddlew<paddlew) paddlex+=5;
-  ctx.fillStyle = paddlecolor;
-  rect(paddlex, HEIGHT-paddleh, paddlew, paddleh);
-
-  drawbricks();
-
-  //want to learn about real collision detection? go read
-  // http://www.harveycartel.org/metanet/tutorials/tutorialA.html
-  rowheight = BRICKHEIGHT + PADDING;
-  colwidth = BRICKWIDTH + PADDING;
-  row = Math.floor(y/rowheight);
-  col = Math.floor(x/colwidth);
-
-  //reverse the ball and mark the brick as broken
-  if (y < NROWS * rowheight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
-    dy = -dy;
-    bricks[row][col] = 0;
-  }
- 
-  if (x + dx + ballr > WIDTH || x + dx - ballr < 0)
-    dx = -dx;
-  if (y + dy - ballr < 0)
-    dy = -dy;
-  else if (y + dy + ballr > HEIGHT - paddleh) {
-    	if (x > paddlex && x < paddlex + paddlew) {
-     		//move the ball differently based on where it hit the paddle
-      		dx = 10 * ((x-(paddlex+paddlew/2))/paddlew);
-      		dy = -dy;
-    	}
-      	else if ( y + dy + ballr > HEIGHT+25)
-      		clearInterval(intervalID);
-  	}
- 
-  x += dx;
-  y += dy;
+}
+function update_score(){
+    if(paddle_touched == false) {
+    	score+=(5*hit_count);
+        hit_count++ ;
+    }
+    else score++;
+    if(paddle_touched){
+    	hit_count = 1 ;
+        paddle_touched=false;
+    }
+    document.getElementById("br-box").value = score ;
 }
 
-function circle(x,y,r) {
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI*2, true);
-  ctx.closePath();
-  ctx.fill();
+function draw() {
+    
+    ctx.fillStyle = backcolor;
+    clear();
+    ctx.fillStyle = ballcolor;
+    circle(x, y, ballr);
+
+    if (rightDown) paddlex += 5;
+    else if (leftDown) paddlex -= 5;
+    if(paddlex+paddlew>WIDTH) paddlex-=5;
+    else if(paddlex+paddlew<paddlew) paddlex+=5;
+    ctx.fillStyle = paddlecolor;
+    rect(paddlex, HEIGHT-paddleh, paddlew, paddleh);
+    drawbricks();
+    //want to learn about real collision detection? go read
+    // http://www.harveycartel.org/metanet/tutorials/tutorialA.html
+    rowheight = BRICKHEIGHT + PADDING+2;
+    colwidth = BRICKWIDTH + PADDING+2;
+    row = Math.floor(y/rowheight);
+    col = Math.floor(x/colwidth);
+
+    //reverse the ball and mark the brick as broken
+    if (y < NROWS * rowheight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
+    	dy = -dy;
+    	bricks[row][col] = 0;
+	block_numbers--; 
+	if(block_numbers == 0){
+	    clearInterval(intervalID);
+	    restart_button.draw() ;
+	}
+	update_score() ;	
+    }
+    
+    if (x + dx + ballr > WIDTH || x + dx - ballr < 0)
+    	dx = -dx;
+    if (y + dy - ballr < 0) 
+	dy = -dy;
+
+    else if (y + dy + ballr > HEIGHT - paddleh) {
+    	if (x > paddlex && x < paddlex + paddlew) {
+     	    //move the ball differently based on where it hit the paddle
+      	    dx = 10 * ((x-(paddlex+paddlew/2))/paddlew);
+      	    dy = -dy;
+	    paddle_touched = true;
+    	}
+      	else if ( y + dy + ballr > HEIGHT+25){
+	    clearInterval(intervalID);
+	    lives--;
+	    document.getElementById("br-box2").value = lives ;	
+	    if(lives==0){ 
+		ctx.font = 'italic 40pt Calibri';
+		ctx.textAlign='center';
+		ctx.fillStyle = "#FF0033";
+      		ctx.fillText('!!!GAME OVER!!!', WIDTH/2, HEIGHT/2); 
+	    }
+	    else document.getElementById("br-start_button").disabled = false ;
+	    
+	}
+    }
+    
+    x += dx;
+    y += dy;
+}
+
+restart_button = {
+    w: 100,
+    h: 50,
+    x: WIDTH/2 - 50,
+    y: HEIGHT/2 - 50,
+    
+    draw: function() {
+	ctx.strokeStyle = "white";
+	ctx.lineWidth = "2";
+	ctx.strokeRect(this.x, this.y, this.w, this.h);
+	
+	ctx.font = "18px Arial, sans-serif";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	ctx.fillStlye = "white";
+	ctx.fillText("Next Level", WIDTH/2, HEIGHT/2 - 25 );
+    }
+};
+
+function circle(x,y,r){
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
 }
 
 function rect(x,y,w,h) {
-  ctx.beginPath();
-  ctx.rect(x,y,w,h);
-  ctx.closePath();
-  ctx.fill();
+    ctx.beginPath();
+    ctx.rect(x,y,w,h);
+    ctx.closePath();
+    ctx.fill();
 }
 
 function drawbricks() {
-  for (i=0; i < NROWS; i++) {
-    //ctx.fillStyle = rowcolors[Math.floor(Math.random() * 4)];
-    for (j=0; j < NCOLS; j++) {
-	  ctx.fillStyle = rowcolors[Math.floor(Math.random() * 4)];
-      if (bricks[i][j] == 1) {
-        rect((j * (BRICKWIDTH + PADDING)) + PADDING, 
-             (i * (BRICKHEIGHT + PADDING)) + PADDING,
-             BRICKWIDTH, BRICKHEIGHT);
-      }
+
+    for (i=0; i < NROWS; i++) {
+    	//ctx.fillStyle = rowcolors[Math.floor(Math.random() * 4)];
+    	for (j=0; j < NCOLS; j++) {
+	    ctx.fillStyle = block_colors[COLOR_INDEX] ;
+      	    if (bricks[i][j] == 1) {
+        	rect((j * (BRICKWIDTH + PADDING)) + PADDING, 
+             	     (i * (BRICKHEIGHT + PADDING)) + PADDING,
+             	     BRICKWIDTH, BRICKHEIGHT);
+      	    }	
+	    COLOR_INDEX++ ;
+    	}
     }
-  }
+    COLOR_INDEX = 0 ; // reset the index
 }
 
 function clear() {
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  rect(0,0,WIDTH,HEIGHT);
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    rect(0,0,WIDTH,HEIGHT);
 }
 
 function doKeyDown(evt) {
-	
-	//if the game has not started and user press 'space', game starts.
-	if(evt.keyCode==32&&start==false){
-		startdraw();
-		pause = true;
-		start=true;
+    
+    //when user press esc, game stops.
+    if(evt.keyCode==27){
+	if (pause == false && start){ 
+	    clearInterval(intervalID);
+	    pause = true ;
 	}
-	//when user press esc, game stops.
- 	else if(evt.keyCode==27){
-		if (pause){ 
-			clearInterval(intervalID);
-			tmpID++ ;
-			pause = false ;
-		}
-		else if(intervalID==tmpID ){ 
-			intervalID = setInterval(draw, 10);
-			pause = true;
-		}
-	}  
+	else if(pause){ 
+	    intervalID = setInterval(draw, 10);
+	    pause = false;
+	}	}  
 
-	if(evt.keyCode==82) abort();
+    //if(evt.keyCode==82) abort();
 
     //right is 39 left is 37
     if (evt.keyCode == 39) {
-		rightDown = true;
+	rightDown = true;
     }
     
-	else if (evt.keyCode == 37) {
-		leftDown = true;
+    else if (evt.keyCode == 37) {
+	leftDown = true;
     }
 }
 

@@ -1,0 +1,8 @@
+<% if @scores.blank? %>
+  <p>There are no scores currently in the system.</p>
+<% else %>
+  <p>These are the current scores in our system</p>
+  <ul>
+    <%= @scores %>
+  </ul>
+<% end %>
