@@ -22,8 +22,8 @@ SampleApp::Application.routes.draw do
   match '/contact', to: 'static_pages#contact'
   match '/bricks', to: 'games#bricks'
   match '/galaxian', to: 'galaxians#galaxian'
-  match '/galaxian_new', to: 'galaxians#new'
-  match 'galaxians', to: 'galaxians#list'
+  match '/scores', to: 'galaxians#score'
+  match 'galaxians', to: 'galaxians#show'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

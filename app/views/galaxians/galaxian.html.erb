@@ -24,10 +24,11 @@
       </canvas>
 
       <div class="score">SCORE: <span id="score"></span></div>
-      <div class="game-over" id="game-over">GAME OVER<p><span onclick="game.restart()">Restart</span></p></div>
+      <div class="game-over" id="game-over">GAME OVER<p><span onclick="game.restart()" onclick="save()">Restart</span></p></div>
       <div class="loading" id="loading">LOADING...<p>Please wait</p></div>
     </div>
     <div class="fps">FPS: <span id="fps">1</span>  <button type="button" onclick="mute()">Mute/Unmute</button></div>
+    
     <script>
       function mute() {
       if (game.backgroundAudio.volume !== 0) {
@@ -39,6 +40,14 @@
       game.gameOverAudio.volume = .25;
       }
       }
+
+      function save() {
+      var score = $('#score').html();
+      <% @score = %>score; 
+      <% Galaxian.create(user:@user.name, score: @score, wave: 1337) %>
+
+      }
+
     </script>
   </body>
 </html>
