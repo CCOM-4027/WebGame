@@ -35,4 +35,8 @@ class GalaxiansController < ApplicationController
     @score = params[:score]
   end
 
+  def high_scores
+    @galaxians = Galaxian.all
+  end
+
 end
