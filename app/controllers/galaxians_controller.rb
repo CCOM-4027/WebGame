@@ -29,5 +29,10 @@ class GalaxiansController < ApplicationController
   def galaxian
     @user = User.find_by_remember_token(cookies[:remember_token])
   end
+  
+  def update_score
+    @user = User.find_by_remember_token(cookies[:remember_token])
+    @score = params[:score]
+  end
 
 end

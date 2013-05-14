@@ -41,12 +41,21 @@
       }
       }
 
-      function save() {
-      var score = $('#score').html();
-      <% @score = %>score; 
-      <% Galaxian.create(user:@user.name, score: @score, wave: 1337) %>
 
-      }
+      $('#game-over').on("click",function(){ // use event as per your need
+      $.ajax({
+              type: "GET",
+              url:    "/update_score", // should be mapped in routes.rb
+              data: {score: $('#score').html()},
+              datatype:"html", // check more option             
+              async:   true
+            });    
+
+      });
+
+
+
+
 
     </script>
   </body>
