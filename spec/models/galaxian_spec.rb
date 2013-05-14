@@ -8,6 +8,7 @@
 #  wave       :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  userID     :integer
 #
 
 require 'spec_helper'

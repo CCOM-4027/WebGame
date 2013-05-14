@@ -1,2 +1,6 @@
-<%Galaxian.create(user: @user.name, score: @score, wave:1337)%>
-<% flash[:notice] = "Score successfully created"%>
+<%if Galaxian.find_by_userID(@user.id) == nil%>
+  <%Galaxian.create(user: @user.name, score: @score, wave:1337, userID: @user.id)%>
+  <%else%>
+  <%Galaxian.find_by_userID(@user.id).update_attributes(score: @score, wave: 007) %>
+  <%end%>
+    
