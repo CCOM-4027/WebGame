@@ -1,6 +1,6 @@
 <%if Galaxian.find_by_userID(@user.id) == nil%>
   <%Galaxian.create(user: @user.name, score: @score, wave:1337, userID: @user.id)%>
-  <%else%>
-  <%Galaxian.find_by_userID(@user.id).update_attributes(score: @score, wave: 007) %>
+  <%elsif @score.to_i >= Galaxian.find_by_userID(@user.id).score%>
+    <%Galaxian.find_by_userID(@user.id).update_attributes(score: @score, wave: 007) %>
   <%end%>
     
