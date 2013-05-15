@@ -68,7 +68,7 @@ function init() {
 function save (){
         $.ajax({
         type: "GET",
-        url: "/update_score", // should be mapped in routes.rb
+        url: "/update_bricks", // should be mapped in routes.rb
         data: {score: $('#br-box').val()},
         datatype:"html", // check more option 
         async: true
