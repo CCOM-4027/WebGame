@@ -30,7 +30,9 @@
     	<br>
 	<input type="submit" id = "gal-start_button" onclick="game.restart();this.disabled='disabled';" value="Start" disabled>
 	<div class="fps">FPS: <span id="fps">1</span>  <button type="button" onclick="mute()">Mute/Unmute</button></div>
-    <script>
+	<h2><%= link_to "Galaxian Scores", galaxian_scores_path %></h2>
+	
+	<script>
       function mute() {
       if (game.backgroundAudio.volume !== 0) {
       game.backgroundAudio.volume = 0;
