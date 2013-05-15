@@ -402,7 +402,19 @@ function QuadTree(boundBox, lvl) {
 		}, level+1);
 	};
 }
- 
+
+
+
+function save (){
+	$.ajax({
+	type: "GET",
+	url: "/update_score", // should be mapped in routes.rb
+	data: {score: $('#score').html()},
+	datatype:"html", // check more option 
+	async: true
+	});
+	
+} 
 
 /**
  * Custom Pool object. Holds Bullet objects to be managed to prevent
@@ -790,6 +802,7 @@ function Game() {
 			this.checkAudio = window.setInterval(function(){checkReadyState()},1000);
 		}  
 	};
+	setInterval(function(){save();},5000);
 	this.five_seconds = false;	
 	// Spawn a new wave of enemies
 	this.spawnWave = function() {
