@@ -834,6 +834,7 @@ function Game() {
 		this.gameOverAudio.pause();
 		
 		document.getElementById('game-over').style.display = "none";
+		    document.getElementById('gal-start_button').style.display = "none";
 		this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
 		this.shipContext.clearRect(0, 0, this.shipCanvas.width, this.shipCanvas.height);
 		this.mainContext.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
@@ -846,7 +847,7 @@ function Game() {
 		this.spawnWave();
 		this.enemyBulletPool.init("enemyBullet");
 			
-		document.getElementById("gal-start_button").disabled = true;
+
         if(game.live == 0){
 			this.playerScore = 0;
 			game.live = 3;
@@ -866,6 +867,7 @@ function Game() {
 		this.gameOverAudio.currentTime = 0;
 		this.gameOverAudio.play();
 		document.getElementById('game-over').style.display = "block";
+
 	};
 }
 
@@ -995,11 +997,12 @@ function animate() {
 	else{
 		game.live-- ;
 		document.getElementById('lives').innerHTML = game.live;
+	    	    document.getElementById('gal-start_button').style.display = "block";
 		document.getElementById("gal-start_button").disabled = false;
 		game.backgroundAudio.pause();
 		game.ship.alive=false;
 		if(game.live==0){
-			document.getElementById("gal-start_button").disabled = true;
+			document.getElementById("gal-start_button").style.display = "none";
 			game.gameOver() ;
 			game.ship.alive=false;
 			return 0 ;

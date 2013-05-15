@@ -47,6 +47,28 @@
 .game-over span:hover {
     color: #FFD700;
 }
+.gal-start_button{
+    position: absolute;
+    top:40%;
+    left:30%;
+    color: #FF7F00;
+    font-family: Helvetica, sans-serif;
+    font-size: 30px;
+    cursor: default;
+    display: none;
+}
+
+.gal-start_button span {
+    font-size: 30px;
+    cursor: pointer;
+    position: relative;
+    left: 50px;
+}
+
+.gal-start_button span:hover {
+    color: #FFD700;
+}
+
 .loading {
     position: absolute;
     top:40%;

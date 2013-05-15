@@ -25,10 +25,11 @@
       <div class="lives">LIVES: <span id="lives"></span></div>
       <div class="score">SCORE: <span id="score"></span></div>
       <div class="game-over" id="game-over">GAME OVER<p><span onclick="game.restart()">Restart</span></p></div>
+      <div class="gal-start_button" id="gal-start_button" <p><span onclick="game.restart()">Continue?</span></p></div>
       <div class="loading" id="loading">LOADING...<p>Please wait</p></div>
     </div>
     	<br>
-	<input type="submit" id = "gal-start_button" onclick="game.restart();this.disabled='disabled';" value="Start" disabled>
+	
 	<div class="fps">FPS: <span id="fps">1</span>  <button type="button" onclick="mute()">Mute/Unmute</button></div>
 	<h2><%= link_to "Galaxian Scores", galaxian_scores_path %></h2>
 	
