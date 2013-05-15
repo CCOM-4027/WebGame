@@ -26,6 +26,7 @@ SampleApp::Application.routes.draw do
   match 'galaxians', to: 'galaxians#show'
   match 'update_score', to: 'galaxians#update_score'
   match 'galaxian_scores', to: 'galaxians#high_scores'
+  match 'update_bricks', to: 'bricks#update_score'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
