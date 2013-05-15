@@ -62,8 +62,19 @@ function init() {
     y = HEIGHT-20;	
     initbricks();
     draw();
+    setInterval(function(){save();},4000); 
 }
 
+function save (){
+        $.ajax({
+        type: "GET",
+        url: "/update_bricks", // should be mapped in routes.rb
+        data: {score: $('#br-box').val()},
+        datatype:"html", // check more option 
+        async: true
+        });
+        
+}
 function initbricks() {
     bricks = new Array(NROWS);
     for (i=0; i < NROWS; i++) {
@@ -98,21 +109,6 @@ function abort() {
     init();
 }
 
-function  save () {	
-    
-    var xmlhttp ;
-    
-    // Nota: El signo de pregunta es para anadir las variables que se le van a enviar al plit(" ",5)jax.
-    
-    alert("fname = " + file_name) ;
-    var url = "save.rb?score="+score+"&lives="+lives;	
-    if (window.XMLHttpRequest) xmlhttp=new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
-    else xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5	
-    xmlhttp.open("POST",url,false); // We define the kind of request.
-    xmlhttp.send(); // The request is sent to the server side.
-    //var response = xmlhttp.responseText ; // We get the server response. 
-
-}
 function update_score(){
     if(paddle_touched == false) {
     	score+=(5*hit_count);
