@@ -8,11 +8,11 @@
       <th>Score</th>  
     </tr>  
   </thead>  
-  <% @bricks.each do |g|%>
+  <% @bricks.each_with_index do |g, i|%>
     <tbody>  
       <tr>  
 	<td><%=i+1%></td>
-        <td><%=link_to "#{g.user}", user_path(g.userID) %></td>  
+	<td><%= gravatar_for User.find(g.userID), size:52 %><%=link_to "#{g.user}", user_path(g.userID) %></td>  
         <td><%=g.score%></td>  
       </tr>  
     </tbody>  
