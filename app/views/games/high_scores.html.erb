@@ -1,5 +1,5 @@
 <h1>Bricks Scores</h1>
-<%@bricks.sort{ |x,y| y[:score] <=> x[:score] }%>
+
 <% @bricks.each do |g|%>
   <div><%= "Name:#{g.user}    Score:#{g.score}"%></div>
 <%end%>
