@@ -1,0 +1,6 @@
+<%if Bricks.find_by_userID(@user.id) == nil%>
+  <%Bricks.create(user: @user.name, score: @score, level:1337, userID: @user.id)%>
+  <%elsif @score.to_i >= Bricks.find_by_userID(@user.id).score%>
+    <%Bricks.find_by_userID(@user.id).update_attributes(score: @score, level: 007) %>
+  <%end%>
+    

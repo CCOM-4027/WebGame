@@ -1,7 +1,6 @@
 class GalaxiansController < ApplicationController
   def index
     @scores = Galaxian.find(:all)
-   
   end
 
   def show

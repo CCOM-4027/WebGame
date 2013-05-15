@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130514190648) do
+ActiveRecord::Schema.define(:version => 20130515053502) do
+
+  create_table "bricks", :force => true do |t|
+    t.string   "user"
+    t.integer  "score"
+    t.integer  "level"
+    t.integer  "userID"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "galaxians", :force => true do |t|
     t.string   "user"
