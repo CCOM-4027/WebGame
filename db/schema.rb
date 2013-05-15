@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130511190820) do
+ActiveRecord::Schema.define(:version => 20130514190648) do
 
   create_table "galaxians", :force => true do |t|
     t.string   "user"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20130511190820) do
     t.integer  "wave"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "userID"
   end
 
   create_table "microposts", :force => true do |t|
