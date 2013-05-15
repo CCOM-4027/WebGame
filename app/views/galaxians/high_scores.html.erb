@@ -1,5 +1,20 @@
 <h1>Galaxian Scores</h1>
 <%@galaxians.sort!{ |x,y| y[:score] <=> x[:score] }%>
-<% @galaxians.each do |g|%>
-  <div><%= "Name:#{g.user}    Score:#{g.score}"%></div>
-<%end%>
+<table class="table">  
+  <thead>  
+    <tr>  
+      <th>Rank</th>
+      <th>User</th>  
+      <th>Score</th>  
+    </tr>  
+  </thead>  
+  <% @galaxians.each_with_index do |g, i|%>
+    <tbody>  
+      <tr>  
+	<td><%=i+1%></td>
+        <td><%=g.user%></td>  
+        <td><%=g.score%></td>  
+      </tr>  
+    </tbody>  
+    <%end%>
+</table> 

@@ -1,5 +1,20 @@
 <h1>Bricks Scores</h1>
 <%@bricks.sort!{ |x,y| y[:score] <=> x[:score] }%>
-<% @bricks.each do |g|%>
-  <div><%= "Name:#{g.user}    Score:#{g.score}"%></div>
-<%end%>
+<table class="table">  
+  <thead>  
+    <tr>  
+      <th>Rank</th>
+      <th>User</th>  
+      <th>Score</th>  
+    </tr>  
+  </thead>  
+  <% @bricks.each do |g|%>
+    <tbody>  
+      <tr>  
+	<td><%=i+1%></td>
+        <td><%=g.user%></td>  
+        <td><%=g.score%></td>  
+      </tr>  
+    </tbody>  
+    <%end%>
+</table>
