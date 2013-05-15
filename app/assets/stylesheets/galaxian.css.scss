@@ -18,6 +18,16 @@
     font-family: Helvetica, sans-serif;
     cursor: default;
 }
+
+.lives 
+{
+    position: absolute;
+    right: 84%;
+    color: #FF7F00;
+    font-family: Helvetica, sans-serif;
+    cursor: default;
+}
+
 .game-over {
     position: absolute;
     top:40%;

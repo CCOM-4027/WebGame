@@ -1,4 +1,4 @@
-/***************
+/**************
  * PART FIVE - Finishing touches
  ***************/
 
@@ -28,6 +28,8 @@ var lastFrame = Date.now();
 var thisFrame;
 var elapsed;
 var game = new Game();
+var pause = false ;
+
 
 function init() {
 	game.init();
@@ -120,20 +122,21 @@ function Drawable() {
  * canvas and creates the illusion of moving by panning the image.
  */
 function Background() {
+
 	this.speed = 1; // Redefine speed of the background for panning
 	
 	// Implement abstract function
 	this.draw = function() {
-		// Pan background
-		this.y += this.speed;
-		//this.context.clearRect(0,0, this.canvasWidth, this.canvasHeight);
-		this.context.drawImage(imageRepository.background, this.x, this.y);
+	// Pan background
+	this.y += this.speed;
+	//this.context.clearRect(0,0, this.canvasWidth, this.canvasHeight);
+	this.context.drawImage(imageRepository.background, this.x, this.y);
 		
-		// Draw another image at the top edge of the first image
-		this.context.drawImage(imageRepository.background, this.x, this.y - this.canvasHeight);
+	// Draw another image at the top edge of the first image
+	this.context.drawImage(imageRepository.background, this.x, this.y - this.canvasHeight);
 
-		// If the image scrolled off the screen, reset
-		if (this.y >= this.canvasHeight)
+	// If the image scrolled off the screen, reset
+	if (this.y >= this.canvasHeight)
 			this.y = 0;
 	};
 }
@@ -423,6 +426,7 @@ function QuadTree(boundBox, lvl) {
  * Doing this makes creating/destroying objects in the pool 
  * constant.
  */
+
 function Pool(maxSize) {
 	var size = maxSize; // Max bullets allowed in the pool
 	var pool = [];
@@ -523,11 +527,11 @@ function Pool(maxSize) {
 function Ship() {
 	this.speed = 3;
 	this.bulletPool = new Pool(30);
-	var fireRate = 15;
+	var fireRate =7;
 	var counter = 0;
 	this.collidableWith = "enemyBullet";
 	this.type = "ship";
-	
+		
 	this.init = function(x, y, width, height) {
 		// Defualt variables
 		this.x = x;
@@ -539,14 +543,15 @@ function Ship() {
 		this.bulletPool.init("bullet");
 	}
 	
-	this.draw = function() {
-		this.context.drawImage(imageRepository.spaceship, this.x, this.y);
+	this.draw = function(x,y) {
+		this.context.drawImage(imageRepository.spaceship, x, y);
 	};
 	this.move = function() {	
 		counter++;
+
 		// Determine if the action is move action
 		if (KEY_STATUS.left || KEY_STATUS.right ||
-				KEY_STATUS.down || KEY_STATUS.up) {
+				KEY_STATUS.down || KEY_STATUS.up ) {
 			// The ship moved, so erase it's current image so it can
 			// be redrawn in it's new location
 			this.context.clearRect(this.x, this.y, this.width, this.height);
@@ -554,6 +559,7 @@ function Ship() {
 			// Update x and y according to the direction to move and
 			// redraw the ship. Change the else if's to if statements
 			// to have diagonal movement.
+			
 			if (KEY_STATUS.left) {
 				this.x -= this.speed
 				if (this.x <= 0) // Kep player within the screen
@@ -575,12 +581,19 @@ function Ship() {
 		
 		// Redraw the ship
 		if (!this.isColliding) {
-			this.draw();
+			this.draw(this.x,this.y);
 		}
-		else {
-			this.alive = false;
-			game.gameOver();
-		}
+		else this.alive=false;
+		//else{
+			//this.live--;
+			//this.init();	
+			//this.draw(game.shipStartX,game.shipStartY);	
+			//ithis.isColliding= false ;	
+			//this.context.clearRect(game.shipStartX,game.shipStartY, game.shipCanvas.width, game.shipCanvas.height);
+		//}	
+		
+			//this.context.drawImage(imageRepository.spaceship, this.x, this.y);	
+			//game.gameOver();
 		
 		if (KEY_STATUS.space && counter >= fireRate && !this.isColliding) {
 			this.fire();
@@ -597,6 +610,7 @@ function Ship() {
 		game.laser.get();
 	};
 }
+
 Ship.prototype = new Drawable();
 
 
@@ -703,7 +717,7 @@ function Game() {
 		this.bgCanvas = document.getElementById('background');
 		this.shipCanvas = document.getElementById('ship');
 		this.mainCanvas = document.getElementById('main');
-		
+		this.SCORE_INDEX=1000 ;	
 		// Test to see if canvas is supported. Only need to
 		// check one canvas
 		if (this.bgCanvas.getContext) {
@@ -740,7 +754,9 @@ function Game() {
 			this.shipStartY = this.shipCanvas.height/4*3 + imageRepository.spaceship.height*2;
 			this.ship.init(this.shipStartX, this.shipStartY, 
 			               imageRepository.spaceship.width, imageRepository.spaceship.height);
-										 
+			
+			this.live = 3;
+			document.getElementById('lives').innerHTML = this.live;	
 			// Initialize the enemy pool object
 			this.enemyPool = new Pool(30);
 			this.enemyPool.init("enemy");
@@ -772,9 +788,9 @@ function Game() {
 			this.gameOverAudio.load();
 
 			this.checkAudio = window.setInterval(function(){checkReadyState()},1000);
-		}
+		}  
 	};
-	
+	this.five_seconds = false;	
 	// Spawn a new wave of enemies
 	this.spawnWave = function() {
 		var height = imageRepository.enemy.height;
@@ -800,31 +816,36 @@ function Game() {
 	};
 	
 	// Restart the game
-	this.restart = function() {
+		this.restart = function() {
+
 		this.gameOverAudio.pause();
 		
 		document.getElementById('game-over').style.display = "none";
 		this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
 		this.shipContext.clearRect(0, 0, this.shipCanvas.width, this.shipCanvas.height);
 		this.mainContext.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
-		
 		this.quadTree.clear();
 		
 		this.background.init(0,0);
 		this.ship.init(this.shipStartX, this.shipStartY, 
 		               imageRepository.spaceship.width, imageRepository.spaceship.height);
-		
 		this.enemyPool.init("enemy");
 		this.spawnWave();
 		this.enemyBulletPool.init("enemyBullet");
-		
-		this.playerScore = 0;
-		
+			
+		document.getElementById("gal-start_button").disabled = true;
+        if(game.live == 0){
+			this.playerScore = 0;
+			game.live = 3;
+			document.getElementById('lives').innerHTML = game.live;
+		}
+			
 		this.backgroundAudio.currentTime = 0;
 		this.backgroundAudio.play();
 		
 		this.start();
 	};
+		
 	
 	// Game over
 	this.gameOver = function() {
@@ -917,6 +938,7 @@ function animate() {
 	elapsed = thisFrame - lastFrame;
 	lastFrame = thisFrame;
 	document.getElementById('fps').innerHTML = avgFramerate;
+
 	document.getElementById('score').innerHTML = game.playerScore;
 
 	// Insert objects into quadtree
@@ -931,26 +953,45 @@ function animate() {
 	// No more enemies
 	if (game.enemyPool.getPool().length === 0) {
 		game.spawnWave();
+		if(game.five_seconds){
+			game.playerScore+=500;	
+			document.getElementById("score").innerHTML=game.playerScore;
+		}
+		else game.five_seconds = true;
 	}
-
+	setInterval(function(){game.five_seconds=false;},5000);
 	// Animate game objects
 	if (game.ship.alive) {
 		requestAnimFrame( animate );
-		
-		game.background.draw();
-		game.ship.move();
-		game.ship.bulletPool.animate();
-		game.enemyPool.animate();
-		game.enemyBulletPool.animate();
-
+		if(pause == false) {
+			game.background.draw();
+			game.ship.move();
+			game.ship.bulletPool.animate();
+			game.enemyPool.animate();
+			game.enemyBulletPool.animate();
+		}
 		frameCount++;
 		elapsedCounter += elapsed;
+
 		if (elapsedCounter > 1000) {
 			elapsedCounter -= 1000;
 			avgFramerate = frameCount;
 			frameCount = 0;
 		}
 	}
+	else{
+		game.live-- ;
+		document.getElementById('lives').innerHTML = game.live;
+		document.getElementById("gal-start_button").disabled = false;
+		game.backgroundAudio.pause();
+		game.ship.alive=false;
+		if(game.live==0){
+			document.getElementById("gal-start_button").disabled = true;
+			game.gameOver() ;
+			game.ship.alive=false;
+			return 0 ;
+		}
+	}		
 }
 
 function detectCollision() {
@@ -984,6 +1025,7 @@ KEY_CODES = {
   38: 'up',
   39: 'right',
   40: 'down',
+  27: 'esc',
 }
 
 // Creates the array to hold the KEY_CODES and sets all their values
@@ -1004,7 +1046,13 @@ document.onkeydown = function(e) {
 	// Firefox and opera use charCode instead of keyCode to
 	// return which key was pressed.
 	var keyCode = (e.keyCode) ? e.keyCode : e.charCode;
-  if (KEY_CODES[keyCode]) {
+  	if (e.keyCode == 27){
+			if(pause=(pause?false:true))
+				game.backgroundAudio.pause();
+			else game.backgroundAudio.play();
+		}
+
+	if (KEY_CODES[keyCode]) {
 		e.preventDefault();
     KEY_STATUS[KEY_CODES[keyCode]] = true;
   }
