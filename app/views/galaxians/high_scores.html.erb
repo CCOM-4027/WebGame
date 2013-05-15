@@ -1,5 +1,5 @@
 <h1>Galaxian Scores</h1>
-<%@galaxians..sort!{ |x,y| y[:score] <=> x[:score] }%>
+<%@galaxians..sort{ |x,y| y[:score] <=> x[:score] }%>
 <% @galaxians.each do |g|%>
   <div><%= "Name:#{g.user}    Score:#{g.score}"%></div>
 <%end%>
