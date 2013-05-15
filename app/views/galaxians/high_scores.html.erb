@@ -12,7 +12,7 @@
     <tbody>  
       <tr>  
 	<td><%=i+1%></td>
-        <td><%=g.user%></td>  
+        <td><%=link_to "#{g.user}", user_path(g.userID) %></td>  
         <td><%=g.score%></td>  
       </tr>  
     </tbody>  
