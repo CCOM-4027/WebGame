@@ -1,5 +1,5 @@
 def full_title(page_title)
-  base_title = "CloudGame, a game database that updates automatically"
+  base_title = "CloudGame"
   if page_title.empty?
     base_title
   else
