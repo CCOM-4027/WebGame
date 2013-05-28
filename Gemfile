@@ -35,7 +35,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails', '2.2.1'
 
 group :test do
-  gem 'capybara', '2.1.0'
+  gem "capybara", "~> 1.1.4"
   gem 'factory_girl_rails', '4.2.0'
 end
 
