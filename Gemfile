@@ -8,6 +8,7 @@ gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
 
 gem "activeresource", "~> 4.0.0.beta1"
+gem 'protected_attributes'
 
 # Bundle edge Rails instead:
 #gem 'rails', :git => 'git://github.com/rails/rails.git'
