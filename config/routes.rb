@@ -13,21 +13,21 @@ SampleApp::Application.routes.draw do
 
   root to: 'static_pages#home'
 
-  match '/signup', to: 'users#new'
-  match '/signin', to: 'sessions#new'
-  match '/signout', to: 'sessions#destroy', via: :delete
+  get '/signup', to: 'users#new'
+  get '/signin', to: 'sessions#new'
+  get '/signout', to: 'sessions#destroy', via: :delete
 
-  match '/help',    to: 'static_pages#help'
-  match '/about',   to: 'static_pages#about'
-  match '/contact', to: 'static_pages#contact'
-  match '/bricks', to: 'games#bricks'
-  match '/galaxian', to: 'galaxians#galaxian'
-  match '/scores', to: 'galaxians#score'
-  match 'galaxians', to: 'galaxians#show'
-  match 'update_score', to: 'galaxians#update_score'
-  match 'galaxian_scores', to: 'galaxians#high_scores'
-  match 'update_bricks', to: 'games#update_score'
-  match 'bricks_scores', to: 'games#high_scores'
+  get '/help',    to: 'static_pages#help'
+  get '/about',   to: 'static_pages#about'
+  get '/contact', to: 'static_pages#contact'
+  get '/bricks', to: 'games#bricks'
+  get '/galaxian', to: 'galaxians#galaxian'
+  get '/scores', to: 'galaxians#score'
+  get 'galaxians', to: 'galaxians#show'
+  get 'update_score', to: 'galaxians#update_score'
+  get 'galaxian_scores', to: 'galaxians#high_scores'
+  get 'update_bricks', to: 'games#update_score'
+  get 'bricks_scores', to: 'games#high_scores'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
